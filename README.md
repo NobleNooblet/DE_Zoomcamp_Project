@@ -21,7 +21,7 @@ The final dashboard can be viewed by opening this [LINK](https://lookerstudio.go
 ## High level project design
 The puprose of this section is to illustrate the data pipeline architecture of this project via the following image:
 
-![](Overal view and design/Overall design.jpg)
+![](images/overall_design.jpg)
 
 
 
