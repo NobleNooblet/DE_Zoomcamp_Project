@@ -23,7 +23,7 @@ def write_gcs(file_name):
     gcs_block = GcsBucket.load("data-engineering-project")
 
     print('Uploading {} to GCS bucket'.format(file_name))
-    from_path = Path('..\\data\\{}'.format(file_name))
+    from_path = Path('.\input\{}'.format(file_name))
     to_path = Path('raw_data/esport_earnings/{}'.format(file_name))
 
     gcs_block.upload_from_path(

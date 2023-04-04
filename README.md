@@ -52,6 +52,7 @@ The pipeline architecture is as follows:
 
 ## Recreating the data pipeline 
 This section will allow the user to create and run the data pipeline.
+Please note that this project was developed in Windows OS.  Any other OS might require an alternative approach
 
 ### 1. Creating Google Cloud Platform (GCP)
 The project pipeline is making use of Google Cloud Platform.  In order for the user to replicate the pipeline, they'll need to set up a GCP environment.  
