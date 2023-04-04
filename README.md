@@ -5,7 +5,7 @@ Ask any young child what they want to do when they grow up and you'll find that,
 
 ![](images/esports_sub_logo.jpg)
 
-The aim of this project is to give the user insight on the possibilities of: 1. The financial gain by playing video games in a professional manner and 2.  To indicate to the user, which might still be deciding on a game to participate in, which games on the e-sports scene is the most rewarding by looking at the top earnings per game and game genre and 3.  Provide the user with a geographical distribution of the top earners for these specific games/genres in order provide insights on which regions are more likely to support specific games in the competitive scene.  
+The aim of this project is to give the user insight on the possibilities of: 1. The financial gain by playing video games in a professional manner and 2.  To indicate to the user, which might still be deciding on a game to participate in, which games on the e-sports scene is the most rewarding by looking at the top earnings per game and game genre and 3.  Provide the user with a geographical distribution of the top earners for these specific games/genres in order to provide insights on which regions are more likely to support specific games in the competitive scene.  
 
 The project will gather, process and display esport earnings data of the top 100 earners for ten specific games found in the esport scenery.  More information on the data gathering, processing and displaying steps are discussed further in this document.
 
@@ -74,7 +74,7 @@ gcloud auth application-default login
 ~~~
 
 ### 2. Terraform And Provisioning Of GCP Resources
-This section assist the user in running the terraform code to set up the GCP resources.
+This section aims to assist the user in running the terraform code to set up the GCP resources.
 
 * The first step for the user is to make sure that Terraform is installed.  The user can make use of these [STEPS](https://phoenixnap.com/kb/how-to-install-terraform) to ensure that Terraform is installed and ready to be used.
 * The next step for the user is to clone this git repo to their local machine.
@@ -99,7 +99,7 @@ After the code completed successfully, the user will have the following infrastr
 ## 3. Python Environment Setup
 This section will assist the user in setting up a python environment in order to run the python scripts in the data pipeline.
 
-The easies (and recommended) way to run the python code is to set up an environment to run the code in.  The user can make use of any method that works for them.  The approach I followed was creating a virtual environment by making use of anacondas with the following steps:
+The easiest (and recommended) way to run the python code is to set up an environment to run the code in.  The user can make use of any method that works for them.  The approach I followed was creating a virtual environment by making use of anacondas with the following steps:
 1.  Run "conda create --name project python=3.9" in order to create the environment.
 2.  Install pip into the environment by running: "conda install -n project pip"
 3.  Run prefect config set PREFECT_API_URL=http://127.0.0.1:4200/api in the command line interface
