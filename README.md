@@ -12,7 +12,7 @@ The project will gather, process and display esport earnings data of the top 100
 ## Data set
 The data that will be used for this project can be found on kaggle.com - [Link](https://www.kaggle.com/datasets/jackdaoud/esports-earnings-for-players-teams-by-game).  The main two files we are interested in are the following:
 * highest_earning_players.csv
-    * Provide the player's detail, game the player plays.
+    * Provide the player's detail and the game the player plays.
 * country-and-continent-codes-list.csv
     * Provide the geographical information that can be linked to the player's country code
 
@@ -26,7 +26,7 @@ The puprose of this section is to illustrate the data pipeline architecture of t
 The pipeline architecture is as follows:
 1.  The data set, found on kaggle.com, are downloaded, processed and stored on Google Cloud Storage via Python (orchestrated by Prefect)
 2.  The data set on Google Cloud Storage is imported into Google Biq Query (GBQ) and located in the staging_project_data data set.  This is done via Python (orchestrated by Prefect)
-    1.  A SQL script is run in order to optimize the newly added data by making use of clustering.
+    1.  A SQL script is executed in GBQ in order to optimize the newly added data by making use of clustering.
     2.  Note that no partitions are needed in this case as there is no date values in the data set - hence we are only making use of clustering.
 3.  DBT uses the staging data in GBQ to build the applicable views and production data sets that will be used for dashboarding.
 4.  DBT stores the newly created production data sets in GBQ (production_project_data data set)
@@ -74,14 +74,15 @@ gcloud auth application-default login
 This section assist the user in running the terraform code to set up the GCP resources.
 
 * The first step for the user is to make sure that Terraform is installed.  The user can make use of these [STEPS](https://phoenixnap.com/kb/how-to-install-terraform) to ensure that Terraform is installed and ready to be used.
-* The next step for the user is to check this the git repository.
+* The next step for the user is to clone this git repo to their local machine.
+* Copy the service account's JSON credential file into the "Terraform" folder and name it "gcs_service_acc.json"
 * Navigate to the Terraform folder and edit the "variables.tfvars" file with the following:
     * project = #Enter your project id here
 * The user can now make use of the CLI.  Navigate to the Terraform folder and run the following commands:
 ~~~
 terraform init
 terraform plan -var-file variables.tfvars
-terraform apply - var-file variables.tfvars
+terraform apply -var-file variables.tfvars
 ~~~
 
 After the code completed successfully, the user will have the following infrastructure set up in GCS:
@@ -96,13 +97,14 @@ After the code completed successfully, the user will have the following infrastr
 This section will assist the user in setting up a python environment in order to run the python scripts in the data pipeline.
 
 The easies (and recommended) way to run the python code is to set up an environment to run the code in.  The user can make use of any method that works for them.  The approach I followed was creating a virtual environment by making use of anacondas with the following steps:
-1.  Run "conda create --name project" in order to create the environment.
+1.  Run "conda create --name project python=3.9" in order to create the environment.
 2.  Install pip into the environment by running: "conda install -n project pip"
-3.  Activate the envirionment by running: "conda activate project"
-4.  Install the packages required: pip install -r requirements.txt  (the requirements.txt file can be found under the requirements folder in this repo)
+3.  Run prefect config set PREFECT_API_URL=http://127.0.0.1:4200/api in the command line interface
+4.  Activate the envirionment by running: "conda activate project"
+5.  Install the packages required: pip install -r requirements.txt  (the requirements.txt file can be found under the requirements folder in this repo)
 
 ## 4. Prefect Setup
-It is important to note that the user needs to complete step 3 before attempting this step as Prefect is installed in step 3.
+It is important to note that the user needs to complete section 3 before attempting this step as Prefect is installed via the pip install command.
 It is also important for the user to note that all code from here onwards need to be run in the newly created environment.
 
 This section will focus on accessing the Prefect GUI and allowing Prefect to integrate with GCP.
@@ -112,9 +114,9 @@ In the terminal (of the newly created environment) the user shoud run ``` prefec
 The user will create the following blocks in Prefect in order to allow Prefect to seamlessly integrate with GCP.  
    * GCP Credentials  
       * You'll need to provide the JSON key that you generated for your GCP service account
-      * Take note of the name of the block that you choose as you'll make use if it at a later stage
+      * Name the block "gcp-project-service-account" for the purpose of this document
    * GCS Bucket 
-      * Take note of the name of the block that you choose as you'll make use if it at a later stage
+      * Name the block "data-engineering-project" for the purpose of this document
 
 ## 5. Accessing Kaggle dataset
 One last step that the user needs to complete before running the project pipeline code is to create an account on kaggle.com in order to access the data set.
@@ -129,12 +131,12 @@ Navigate to the code folder and run the following python scripts:
 ``` python ingest.py ```
 This code will do the following:
    * Download 3 files from the data set into a subfolder called "input"
-   * Upload the files to GCS bucket with the following folder setup: bucket/raw_data/esport_earnigns/files
+   * Upload the files to GCS bucket with the following folder setup: bucket/raw_data/esport_earnigns/{files}
    * Note that only 'highest_earning_players.csv' and 'country-and-continent-codes-list.csv' will be uploaded as these are the files that will be used in the project
-``` python gcs_to_gcbq.py ```
+   *  Run ``` python gcs_to_gcbq.py ```
 This code will do the following:
    * Load the GCS data into GBQ with the following structure
-   * Data set: staging+project_data
+   * Data set: staging_project_data
    * Tables: 
       * country_codes
       * player_earnings
@@ -149,15 +151,15 @@ The next step in the process is for the user to optimize the newly tables create
 
 
 ## 8. Data Transformation in DBT
-In order to perform the next steps, the user will need a DBT account.  If not, the user can sign up [HERE](https://github.com/www.getdbt.com)
+In order to perform the next steps, the user will need a DBT account.  If not, the user can sign up [HERE](https://www.getdbt.com/signup/)
 
-* Create a new project and connect it with Google Big Query
+* Create a new project and connect it to Google Big Query
    * Keep your GCP project id and serivce account file close by as you'll need to for this step.
 * In the DBT develop tab you can connect to the project created and stored in this repo.  (https://github.com/NobleNooblet/DE_Zoomcamp_Project/tree/main/dbt)
 * Now the user needs to set up the "Production" deployment step.
    * In DBT online, navigate to Deploy -> Envvironments -> Create Environment.
    * Name the Environment "Production"
-   * Enter the following dataset: production_project_data and save.
+   * Enter the following dataset: production_project_data -> save.
 * Navigate to Deploy -> Jobs -> Create Job
    * Choose the production environment and ensure that the following two commands are listed in the job:
       * dbt build --select +earnings_data
@@ -171,6 +173,8 @@ In order to perform the next steps, the user will need a DBT account.  If not, t
       * This is the table that will be used in the dashboard.
 ## 9. Data visualization
 The user can make use of any data visualization tool of their choice to access the newly created table with its data.  Google Looker Studio was used in this case and it was set up to access the "earnings_data" table in the "production_project_data" data set in Google Biq Query.
+
+The final dashboard can be viewed by opening this [LINK](https://lookerstudio.google.com/s/sBzaz4soa7I)
 
 Here's an example of the dashboard that was built:
 ![](images/dashboard.jpg)
