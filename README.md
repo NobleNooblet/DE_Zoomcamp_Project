@@ -21,7 +21,9 @@ The final dashboard can be viewed by opening this [LINK](https://lookerstudio.go
 ## High level project design and workflow description
 The puprose of this section is to illustrate the data pipeline architecture of this project via the following image:
 
+
 ![](images/overall_design.jpg)
+
 
 The pipeline architecture is as follows:
 1.  The data set, found on kaggle.com, are downloaded, processed and stored on Google Cloud Storage via Python (orchestrated by Prefect)
@@ -183,3 +185,5 @@ Here's an example of the dashboard that was built:
 ## 10.  Closing Remarks
 I would like to thank the DataTalks.Club group for providing me with enough knowledge to have a better understanding in building a data pipeline with various different tools and also providing insights on how they interact with eachother.
 With all this added knowledge...who knows what the future holds... Till next time.
+
+![](images/esports_win.jpg)
