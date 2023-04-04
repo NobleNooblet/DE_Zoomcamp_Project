@@ -10,7 +10,7 @@ The aim of this project is to give the user insight on the possibilities of: 1. 
 The project will gather, process and display esport earnings data of the top 100 earners for ten specific games found in the esport scenery.  More information on the data gathering, processing and displaying steps are discussed further in this document.
 
 ## Data set
-The data that will be used for this project can be found on kaggle.com - [Link](https://www.kaggle.com/datasets/jackdaoud/esports-earnings-for-players-teams-by-game).  The main two files we are interested in are the following:
+The data that will be used for this project can be found on kaggle.com - [LINK](https://www.kaggle.com/datasets/jackdaoud/esports-earnings-for-players-teams-by-game).  The main two files we are interested in are the following:
 * highest_earning_players.csv
     * Provide the player's detail and the game the player plays.
 * country-and-continent-codes-list.csv
